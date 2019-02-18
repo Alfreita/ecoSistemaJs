@@ -1,0 +1,4 @@
+node_modules/*
+nodeJs/node_modules/*
+reactJS/node_modules/*
+reactNative/node_modules/*
