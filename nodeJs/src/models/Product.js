@@ -14,7 +14,7 @@ const ProductSchema = new mongoose.Schema({
         required:true
     },
     createdAt:{
-        type:DataCue,
+        type:Date,
         default:Date.now
     }
 });
