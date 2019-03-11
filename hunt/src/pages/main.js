@@ -8,17 +8,26 @@ static navigationOptions ={
 
 state ={
     docs: [],
+    page:1,
+    productInfo:{},
 };
 
 componentDidMount(){
     this.loadProducts();
 }
 
-loadProducts = async () => {
-    const response = await api.get('/products');
+loadProducts = async (page=1) => {
+    const response = await api.get(`/products?page=${page}`);
 
-    const { docs } = response.data;
-    this.setState({docs});
+    const { docs , ...productInfo } = response.data;
+    this.setState({ docs:[...this.state.docs, ...docs] , productInfo ,page });
+};
+
+loadMore = async() =>{
+    const { page, productInfo }= this.state;
+    if(page === productInfo.page) return;
+    const pageNumber = page + 1;
+    this.loadProducts(pageNumber);
 };
 
 renderItem = ({item}) =>(
@@ -39,6 +48,8 @@ renderItem = ({item}) =>(
                data = {this.state.docs} 
                keyExtractor={item => item._id}
                renderItem={this.renderItem}
+               onEndReached={this.loadMore}
+               onEndReachedThreshold={0.1}
                />
             </View>
         );
